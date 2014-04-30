@@ -26,13 +26,6 @@ class PhpExecutable extends BaseExecutable {
             }
             throw new LogicException(sprinf('%s is not file', $phpBin));
         }
-        $descriptors = array(array('pipe', 'r'), array('pipe', 'w'), array('pipe', 'w'));
-        $proc = @proc_open(escapeshellarg($phpBin) . ' -v', $descriptors, $pipes);
-        $output = stream_get_contents($pipes[1]);
-        $error = stream_get_contents($pipes[2]);
-        if (proc_close($proc)) {
-            throw new \LogicException(sprintf("Unable to run %s: ", $phpBin) . preg_replace('#[\r\n ]+#', ' ', $error));
-        }
 
         $this->file = $file;
         $this->arguments = $arguments;
