@@ -1,0 +1,24 @@
+{
+    "name": "besanek/threads",
+    "type": "library",
+    "description": "Fake threads in PHP",
+    "license": ["BSD-3-Clause", "GPL-2.0", "GPL-3.0"],
+    "keywords": ["threads", "processes", "subscript"],
+    "authors": [
+        {
+            "name": "Robert Jelen",
+            "homepage": "http://robert.kdpvv.cz"
+        }
+    ],
+    "require-dev": {
+        "nette/tester": "1.0.*"
+    },
+    "autoload": {
+        "psr-0": {
+            "Besanek\\Threads": "src"
+        },
+        "classmap": [
+            "src/Besanek/Threads/exceptions.php"
+        ]
+    }
+}
