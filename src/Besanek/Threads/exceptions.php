@@ -6,4 +6,6 @@ namespace Besanek\Threads;
 /**
  * @author Robert Jelen
  */
-class LogicException extends \LogicException;
+class LogicException extends \LogicException{
+
+}
