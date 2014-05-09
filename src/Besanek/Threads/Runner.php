@@ -7,6 +7,9 @@ namespace Besanek\Threads;
  */
 class Runner {
 
+    /** @var int Waiting between 2 checking cycles in microseconds*/
+    public $waiting = 10000;
+
     private $jobs = array();
     private $threads;
 
@@ -47,7 +50,7 @@ class Runner {
                 }
                 $complete = false;
             }
-        } while ($clear && !$this->isClear());
+        } while ($clear && !$this->isClear() && usleep($this->waiting) === null);
     }
 
     /**
