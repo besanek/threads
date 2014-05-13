@@ -22,9 +22,9 @@ class PhpExecutable extends BaseExecutable {
         }
         if (is_executable($phpBin) === false) {
             if(is_file($phpBin)) {
-                throw new LogicException(sprinf('Binary %s can not be execute', $phpBin));
+                throw new LogicException(sprintf('Binary %s can not be execute', $phpBin));
             }
-            throw new LogicException(sprinf('%s is not file', $phpBin));
+            throw new LogicException(sprintf('%s is not file', $phpBin));
         }
 
         $this->file = $file;
