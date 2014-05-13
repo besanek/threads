@@ -40,6 +40,22 @@ class JobTest extends TestCase
 
         \Assert::true($called);
     }
+
+    public function testEditArgumentsAfterCreateJob()
+    {
+        $executable = new \Besanek\Threads\Executables\PhpExecutable(__DIR__ .'/../Helpers/repeat.php', 'foo');
+        $job1 = new \Besanek\Threads\Job($executable, function($out) {
+            \Assert::same('foo', trim($out));
+        });
+        $executable->setArguments('bar');
+        $job2 = new \Besanek\Threads\Job($executable, function($out) {
+            \Assert::same('bar', trim($out));
+        });
+        $job1->run();
+        $job2->run();
+        while(!$job1->isDone()){};
+        while(!$job2->isDone()){};
+    }
 }
 
 id(new JobTest)->run();

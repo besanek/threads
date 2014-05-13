@@ -23,7 +23,7 @@ class Job {
      */
     public function __construct(IExecutable $executable, $onSuccess = null, $onError = null)
     {
-        $this->executable = $executable;
+        $this->executable = clone $executable;
         $this->onSuccess = $onSuccess;
         $this->onError = $onError;
     }
