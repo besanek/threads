@@ -7,40 +7,55 @@ use Besanek\Threads\LogicException;
 /**
  * @author Robert Jelen
  */
-class PhpExecutable extends BaseExecutable {
+class PhpExecutable extends SimpleExecutable {
+
+    private $workDir;
+    private $phpBinaryArgs;
+    private $file;
 
     /**
      * @param string $file
      * @param string $arguments
-     * @param string $phpBin
-     * @throws LogicException
+     * @param string $phpBinary
+     * @param string $phpBinaryArgs
      */
-    public function __construct($file, $arguments = null, $phpBin = null)
+    public function __construct($file, $arguments = '', $phpBinary = 'php', $phpBinaryArgs = '')
     {
-        if (empty($phpBin)) {
-            $phpBin = $this->detectPhpBinary();
-        }
-        if (is_executable($phpBin) === false) {
-            if(is_file($phpBin)) {
-                throw new LogicException(sprintf('Binary %s can not be execute', $phpBin));
-            }
-            throw new LogicException(sprintf('%s is not file', $phpBin));
-        }
-
         $this->file = $file;
-        $this->arguments = $arguments;
-        $this->executable = $phpBin;
+        $this->phpBinaryArgs = $phpBinaryArgs;
+        $this->workDir = dirname($file);
+        parent::__construct($phpBinary, $this->parseArguments($arguments));
+    }
+
+    /**
+     * @param string $argumens
+     */
+    public function setArguments($arguments)
+    {
+        parent::setArguments($this->parseArguments($arguments));
     }
 
     /**
      * @return string
-     * @throws LogicException
      */
-    protected function detectPhpBinary() {
-        if(defined('PHP_BINARY') && is_executable(PHP_BINARY)) {
-            return PHP_BINARY;
+    public function getWorkDir()
+    {
+        return $this->workDir;
+    }
+
+     /**
+     * @param string $path
+     */
+    public function setWorkDir($path)
+    {
+        if(is_file($path)) {
+            $path = dirname($path);
         }
-        throw new LogicException('PHP binary can not be detect, please enter them manualy');
+        $this->workDir = $path;
+    }
+
+    protected function parseArguments($arguments) {
+        return implode(' ', array($this->phpBinaryArgs, $this->file, $arguments));
     }
 
 }

@@ -9,21 +9,38 @@ use BesanekTests\Threads\TestCase;
 class PhpExecutableTest extends TestCase
 {
 
-    public function testDetectByConstant()
+    public function testCommand()
     {
-        if (defined('PHP_BINARY') === false) {
-            define('PHP_BINARY', '/usr/sbin/php');
-        }
-
-        if(is_executable(PHP_BINARY) === false)
-        {
-            \Tester\Environment::Skip();
-        }
-
-        $phpExecutable = new \Besanek\Threads\Executables\PhpExecutable('/foo/bar');
-
-        \Assert::same(PHP_BINARY, $phpExecutable->getExecutable());
+        $exe = new \Besanek\Threads\Executables\PhpExecutable('/foo/bar', 'foo', 'php-cli', '-v');
+        \Assert::same('php-cli -v /foo/bar foo', $exe->getCommand());
     }
+
+    public function testDetectWorkDir()
+    {
+        $exe = new \Besanek\Threads\Executables\PhpExecutable('/foo/bar');
+        \Assert::same('/foo', $exe->getWorkDir());
+     }
+
+     public function testWorkDirSet()
+    {
+        $exe = new \Besanek\Threads\Executables\PhpExecutable('/foo/bar');
+        $exe->setWorkDir(__DIR__);
+        \Assert::same(__DIR__, $exe->getWorkDir());
+     }
+
+     public function testWorkDirSetFile()
+    {
+        $exe = new \Besanek\Threads\Executables\PhpExecutable('/foo/bar');
+        $exe->setWorkDir(__FILE__);
+        \Assert::same(__DIR__, $exe->getWorkDir());
+     }
+
+    public function testSetArguments()
+    {
+        $exe = new \Besanek\Threads\Executables\PhpExecutable('/foo/bar', 'foo', 'php-cli', '-v');
+        $exe->setArguments('bar');
+        \Assert::same('php-cli -v /foo/bar bar', $exe->getCommand());
+     }
 }
 
 id(new PhpExecutableTest)->run();

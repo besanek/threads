@@ -10,8 +10,15 @@ use Besanek\Threads\IExecutable;
 abstract class BaseExecutable implements IExecutable {
 
     protected $executable;
-    protected $file;
     protected $arguments;
+
+     /**
+     * @param string $arguments
+     */
+    public function setArguments($arguments)
+    {
+        $this->arguments = $arguments;
+    }
 
     /**
      * @return string
@@ -26,7 +33,7 @@ abstract class BaseExecutable implements IExecutable {
      */
     public function getCommand()
     {
-        return $this->executable . ' ' . $this->file . ' ' . $this->arguments;
+        return $this->executable . ' ' . $this->arguments;
     }
 
     /**
@@ -34,7 +41,7 @@ abstract class BaseExecutable implements IExecutable {
      */
     public function getWorkdir()
     {
-        return dirname($this->file);
+        return null;
     }
 
     /**
